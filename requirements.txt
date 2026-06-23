@@ -1,0 +1,18 @@
+# Native Apple Silicon build. Use CPython 3.11 on macOS arm64.
+torch==2.5.1
+torchaudio==2.5.1
+numpy==1.26.4
+
+TTS==0.22.0
+demucs==4.0.1
+faster-whisper==1.2.1
+transformers==4.46.3
+sentencepiece==0.2.0
+
+yt-dlp==2026.6.9
+ffmpeg-python==0.2.0
+pydub==0.25.1
+soundfile==0.14.0
+fastapi==0.115.6
+uvicorn[standard]==0.34.0
+python-multipart==0.0.20

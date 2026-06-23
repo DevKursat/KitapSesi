@@ -1,0 +1,10 @@
+{
+  "name": "kitap-sesi-landing",
+  "private": true,
+  "version": "0.1.0",
+  "scripts": {
+    "dev:studio": "uvicorn web_app:app --host 127.0.0.1 --port 8000",
+    "deploy:preview": "vercel",
+    "deploy:prod": "vercel --prod"
+  }
+}

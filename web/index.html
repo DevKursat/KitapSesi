@@ -1,0 +1,186 @@
+<!doctype html>
+<html lang="tr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Kitap Sesi — Yerel Dublaj Stüdyosu</title>
+  <link rel="stylesheet" href="/assets/style.css">
+</head>
+<body>
+  <main class="shell">
+    <header class="hero">
+      <div>
+        <p class="eyebrow">APPLE SILICON · YEREL ÜRETİM</p>
+        <h1>Kitap Sesi</h1>
+        <p class="lead">Uzun eserleri böl, dublajla ve kesintiden sonra kaldığın
+          checkpoint'ten devam et.</p>
+      </div>
+      <div id="system-badge" class="hero-badge">
+        <span></span><b>Sistem kontrol ediliyor</b>
+      </div>
+      <a class="hero-link" href="/landing" target="_blank">Yayıncı landing</a>
+    </header>
+
+    <section class="composer card">
+      <div id="preflight" class="preflight"></div>
+      <div class="section-title">
+        <div><span>01</span><h2>Yeni eser</h2></div>
+        <p>Kaynak, diller, görsel mod ve altyazı</p>
+      </div>
+      <form id="job-form">
+        <label class="field wide">
+          <span>YouTube URL</span>
+          <input name="url" type="url" required
+            placeholder="https://www.youtube.com/watch?v=…">
+        </label>
+        <label class="field">
+          <span>Video dili</span>
+          <select name="source_language" id="source-language" required></select>
+        </label>
+        <label class="field">
+          <span>Kapak görseli</span>
+          <input name="image" type="file" accept="image/*">
+          <small>Boş bırakılırsa YouTube thumbnail otomatik kullanılır.</small>
+        </label>
+        <label class="field">
+          <span>Model kalitesi</span>
+          <select name="model_tier">
+            <option value="local">Local Studio — aktif</option>
+            <option value="premium_cloud">Premium Cloud — teklif/entegrasyon</option>
+            <option value="enterprise_private">Enterprise Private — özel kurulum</option>
+          </select>
+          <small>Premium/Enterprise seçimleri üretim yerine satış/entegrasyon talebi açar.</small>
+        </label>
+        <label class="field wide">
+          <span>Video görsel modu</span>
+          <select name="visual_mode">
+            <option value="source_video">Orijinal YouTube videosu + dublaj</option>
+            <option value="still_image">Sabit kapak/thumbnail + dublaj</option>
+          </select>
+          <small>
+            Orijinal video modu görüntüyü korur, sesi dublajla değiştirir ve
+            alt kırmızı ilerleme çizgisini ekler. Dudak takibi premium roadmap modülüdür.
+          </small>
+        </label>
+        <label class="field wide">
+          <span>Global altyazı</span>
+          <select name="subtitle_mode">
+            <option value="translated">Dublaj dili altyazısını MP4 + SRT olarak ekle</option>
+            <option value="off">Altyazı ekleme</option>
+          </select>
+          <small>
+            Altyazı zamanlaması orijinal transkripte değil, üretilen dublajın
+            gerçek konuşma zamanına göre ayarlanır.
+          </small>
+        </label>
+        <label class="field wide">
+          <span>XTTS-v2 kullanım lisansı</span>
+          <select name="voice_license" required>
+            <option value="">Lisans durumunu seçin…</option>
+            <option value="commercial">
+              Coqui ticari lisansını satın aldım
+            </option>
+            <option value="noncommercial">
+              Ticari olmayan CPML koşullarını kabul ediyorum
+            </option>
+          </select>
+          <small>
+            CPML seçeneği ticari/gelir amaçlı yayın için onay vermez.
+            <a href="https://huggingface.co/coqui/XTTS-v2" target="_blank"
+            rel="noreferrer">Model ve lisans bilgisi</a>
+          </small>
+        </label>
+        <label class="field wide">
+          <span>Kaynak içerik yayın hakkı</span>
+          <select name="content_rights" required>
+            <option value="">Hak durumunu seçin…</option>
+            <option value="owned">Bu içerik bana ait</option>
+            <option value="licensed">Yayın/dublaj lisansım var</option>
+            <option value="permission">Hak sahibinden yazılı izin aldım</option>
+            <option value="public_domain">Eser kamu malı / telifsiz</option>
+          </select>
+          <small>
+            YouTube telif sistemini atlatmak için değil; izinli, lisanslı veya
+            kamu malı içerikleri güvenle üretmek için kullanılır.
+          </small>
+        </label>
+        <label class="field wide">
+          <span>Hak notu / kaynak kanıtı</span>
+          <input name="rights_notes" type="text"
+            placeholder="Örn. izin e-postası, lisans bağlantısı, kamu malı kaynağı">
+        </label>
+        <fieldset class="language-picker wide">
+          <legend>Dublaj dilleri</legend>
+          <div id="target-languages" class="chips"></div>
+        </fieldset>
+        <div class="form-footer wide">
+          <p>İşler 10 dakikalık kaynak parçaları ve cümle bazlı ses
+            checkpoint'leriyle korunur.</p>
+          <button type="submit" id="submit-button">Üretimi başlat</button>
+        </div>
+      </form>
+    </section>
+
+    <section class="jobs">
+      <div class="section-title">
+        <div><span>02</span><h2>Üretim kuyruğu</h2></div>
+        <p id="job-count">0 iş</p>
+      </div>
+      <div id="jobs-list" class="jobs-list">
+        <div class="empty">Henüz bir eser eklenmedi.</div>
+      </div>
+    </section>
+  </main>
+  <template id="job-template">
+    <article class="job-card card">
+      <div class="job-head">
+        <div>
+          <div class="status-line"><span class="status-dot"></span>
+            <span class="status"></span></div>
+          <h3 class="title"></h3>
+          <p class="languages"></p>
+          <p class="release-state"></p>
+        </div>
+        <strong class="percent"></strong>
+      </div>
+      <div class="progress-track"><div class="progress-fill"></div></div>
+      <div class="job-meta">
+        <span class="stage"></span><span class="message"></span>
+      </div>
+      <div class="job-actions">
+        <button data-action="pause" class="secondary">Durdur</button>
+        <button data-action="resume" class="secondary">Devam et</button>
+        <button data-action="cancel" class="danger">İptal</button>
+        <button data-delete class="delete">Tamamen sil</button>
+      </div>
+      <div class="error"></div>
+      <div class="add-language-panel">
+        <select data-add-language></select>
+        <button data-add-language-save class="secondary">
+          Yeni dil ekle
+        </button>
+      </div>
+      <div class="rebuild-language-panel">
+        <select data-rebuild-language></select>
+        <button data-rebuild-language-save class="secondary">
+          Seçili dili yeniden üret
+        </button>
+      </div>
+      <div class="license-panel">
+        <select data-license>
+          <option value="">XTTS lisansını seçin…</option>
+          <option value="commercial">Ticari lisansım var</option>
+          <option value="noncommercial">Ticari olmayan CPML</option>
+        </select>
+        <button data-license-save class="secondary">Lisansı kaydet</button>
+      </div>
+      <details>
+        <summary>Teknik günlük</summary>
+        <pre class="log"></pre>
+      </details>
+      <div class="outputs"></div>
+    </article>
+  </template>
+  <script src="/assets/app.js"></script>
+</body>
+</html>
