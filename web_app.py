@@ -88,6 +88,11 @@ def landing() -> FileResponse:
     return FileResponse(WEB_ROOT / "landing.html")
 
 
+@app.get("/landing.css")
+def landing_css() -> FileResponse:
+    return FileResponse(WEB_ROOT / "landing.css")
+
+
 @app.get("/api/config")
 def config() -> dict[str, Any]:
     return {
